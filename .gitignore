@@ -1,0 +1,26 @@
+# Seagull .gitignore
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.tmp
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# Build files
+*.zip
+*.tar.gz
+
+# Logs
+*.log
+
+# Test files
+test_*
+*_test.*

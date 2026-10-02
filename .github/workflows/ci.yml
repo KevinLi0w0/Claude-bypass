@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PowerShell
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Test deploy script
+      run: |
+        powershell -ExecutionPolicy Bypass -File "seagull-files\deploy.ps1" -Verify
+      shell: powershell
+
+    - name: Check file structure
+      run: |
+        if (Test-Path "seagull-files\claude-config-bundle\CLAUDE.md") {
+          Write-Host "CLAUDE.md exists"
+        } else {
+          Write-Host "CLAUDE.md missing"
+          exit 1
+        }
+
+        if (Test-Path "seagull-files\claude-config-bundle\system-prompt.md") {
+          Write-Host "system-prompt.md exists"
+        } else {
+          Write-Host "system-prompt.md missing"
+          exit 1
+        }
+      shell: powershell
+
+    - name: Verify greeting in CLAUDE.md
+      run: |
+        $content = Get-Content "seagull-files\claude-config-bundle\CLAUDE.md" -Raw
+        if ($content -match '海鸥在线') {
+          Write-Host "Greeting found"
+        } else {
+          Write-Host "Greeting missing"
+          exit 1
+        }
+      shell: powershell

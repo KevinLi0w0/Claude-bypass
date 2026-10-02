@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Get version
+      id: version
+      run: |
+        $version = Get-Content VERSION -Raw
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+      shell: powershell
+
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          打开c语言.zip
+        name: Seagull ${{ steps.version.outputs.VERSION }}
+        body: |
+          ## Seagull ${{ steps.version.outputs.VERSION }}
+
+          ### 新增功能
+          - 环境检测
+          - 备份管理
+          - 部署验证
+          - 命令行支持
+
+          ### 安装
+          1. 下载 `打开c语言.zip`
+          2. 解压到任意位置
+          3. 双击 `启动.bat`
+
+          ### 系统要求
+          - Windows 10/11
+          - PowerShell 5.1+
+          - Claude Code 已安装
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

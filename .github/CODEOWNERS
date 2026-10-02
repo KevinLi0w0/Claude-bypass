@@ -1,0 +1,12 @@
+# Default code owners
+* @seagull-lab
+
+# Documentation
+*.md @seagull-lab/docs
+
+# Scripts
+*.ps1 @seagull-lab/scripts
+*.bat @seagull-lab/scripts
+
+# Configuration
+seagull-files/claude-config-bundle/ @seagull-lab/config
